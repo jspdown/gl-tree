@@ -11,7 +11,13 @@ function init(gl, scene) {
   var shape = {};
   
   var s = getRandomSize(0.5, 1.5);
-  shape.geometry = box.create(s.x, s.y, s.z);
+  
+  var root = box.create(
+    vec3.fromValues(0, 0, 0),
+    vec3.fromValues(s)
+  );
+  
+  shape.root = root;
   
   shape.uniforms = [
     { name: 'u_projection', location: null },
@@ -37,13 +43,12 @@ function init(gl, scene) {
 }
 
 function update(gl, scene) {
+  var flat = box.flatten(scene.shape.root);
+  
   var vertexBuffer = gl.createBuffer(gl.ARRAY_BUFFER),
       normalBuffer = gl.createBuffer(gl.ARRAY_BUFFER),
       barycentricBuffer = gl.createBuffer(gl.ARRAY_BUFFER),
       indexBuffer = gl.createBuffer(gl.ELEMENT_ARRAY_BUFFER);
-  
-  scene.shape.geometry.updateBarycentric();
-  var flat = scene.shape.geometry.flatten();
   
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flat.vertices), gl.STREAM_DRAW);
