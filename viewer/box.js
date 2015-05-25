@@ -60,6 +60,7 @@ function getS_Vertices(size) {
  * return: box (vec3)
  */
 function create(position, scale) {
+  console.log(scale);
   return {
     position: position,
     scale: scale,
@@ -171,6 +172,8 @@ function getIndexes(currentIndex) {
  * root: box root element
  * position: computed parent position
  * scale: computed parent scale
+ * currentIndex: current index in the buffer
+ * parentFace: parent face id
  * return: 
  *  - vertices: flat vertices
  *  - normals: flat normals
@@ -181,21 +184,25 @@ function getIndexes(currentIndex) {
   * - translate child following the face
   * - translate after scale of the half
   */
-function flatten(root, position, scale, currentIndex, parentFace) {
-  
+function flatten(root, position, scale, currentIndex, parentFace) { 
   position = position || vec3.fromValues(0, 0, 0);
   scale = scale || vec3.fromValues(1, 1, 1);
   currentIndex = currentIndex || 0;
+  
   console.log('FLATTEN\ncurrentIndex = ', currentIndex, 
   '\nparentFace = ', parentFace,
   '\nparent scale = ', scale, 
   '\nnode scale = ', root.scale);
-  var rootPosition = vec3.create(),
-      rootScale = vec3.create();  
   
-  console.log(root);
-  vec3.add(rootPosition, position, root.position);
+  var rootPosition = vec3.create(),
+      rootScale = vec3.create(),
+      toto = vec3.create();
+  
   vec3.mul(rootScale, scale, root.scale);
+  vec3.mul(toto, root.position, scale);
+  vec3.add(rootPosition, position, toto);
+//  vec3.mul(rootScale, scale, root.scale);
+  
   
   var s_vertices = getS_Vertices(rootScale);
   

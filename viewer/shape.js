@@ -12,12 +12,14 @@ function init(gl, scene) {
     
   var root = box.create(
     vec3.fromValues(0, 0, 0),
-    getRandomSize(0.5, 1) 
+    [1.5, 0.8, 1.5]
+    //getRandomSize(0.5, 1) 
   );
 
   var back = box.create(
-    vec3.fromValues(0, 0, 0),
-    getRandomSize(0.1, 1) 
+    vec3.fromValues(0.1, 0.2, 0),
+    [0.8, 0.6, 1]
+    //getRandomSize(0.1, 1) 
   );
 
 //  var backback = box.create(

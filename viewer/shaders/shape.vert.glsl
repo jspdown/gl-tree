@@ -20,5 +20,5 @@ void main() {
 
   vec3 transformedNormal = u_normalMatrix * a_normal;
   float directionalLightWeight = max(dot(transformedNormal, u_lightDirection), 0.0);
-  v_lightWeight = ambiantColor + directionalColor * ((directionalLightWeight * directionalLightWeight) / 5.0);
+  v_lightWeight = ambiantColor + directionalColor * ((directionalLightWeight * directionalLightWeight) / 2.0);
 }
