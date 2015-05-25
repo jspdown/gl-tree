@@ -9,13 +9,25 @@ var glslify = require('glslify');
 
 function init(gl, scene) {
   var shape = {};
-  
-  var s = getRandomSize(0.5, 1.5);
-  
+    
   var root = box.create(
     vec3.fromValues(0, 0, 0),
-    vec3.fromValues(s)
+    getRandomSize(0.5, 1) 
   );
+
+  var back = box.create(
+    vec3.fromValues(0, 0, 0),
+    getRandomSize(0.1, 1) 
+  );
+
+//  var backback = box.create(
+//    vec3.fromValues(0, 0, 0),
+//    getRandomSize(0.5, 0.7) 
+//  );
+
+//  box.addChild(back, box.faces.TOP, backback);
+  box.addChild(root, box.faces.BACK, back);
+
   
   shape.root = root;
   
@@ -44,7 +56,7 @@ function init(gl, scene) {
 
 function update(gl, scene) {
   var flat = box.flatten(scene.shape.root);
-  
+  console.log('flat = ', flat);
   var vertexBuffer = gl.createBuffer(gl.ARRAY_BUFFER),
       normalBuffer = gl.createBuffer(gl.ARRAY_BUFFER),
       barycentricBuffer = gl.createBuffer(gl.ARRAY_BUFFER),
@@ -60,10 +72,10 @@ function update(gl, scene) {
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(flat.barycentric), gl.STREAM_DRAW);
 
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(flat.faces), gl.STREAM_DRAW);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(flat.indexes), gl.STREAM_DRAW);
   
   scene.shape.itemSize = 3;
-  scene.shape.itemNbr = flat.faces.length;
+  scene.shape.itemNbr = flat.indexes.length;
   scene.shape.vertexBuffer = vertexBuffer;
   scene.shape.normalBuffer = normalBuffer;
   scene.shape.barycentricBuffer = barycentricBuffer;
@@ -102,11 +114,11 @@ function render(gl, scene) {
 
 
 function getRandomSize(min, max) {
-  return {
-    x: (Math.random() * 1000) % max + min,
-    y: (Math.random() * 1000) % max + min,
-    z: (Math.random() * 1000) % max + min
-  };
+  return vec3.fromValues(
+    (Math.random() * 1000) % max + min,
+    (Math.random() * 1000) % max + min,
+    (Math.random() * 1000) % max + min
+  );
 }
 
 function buildModelView(modelView, position, rotation, scale) {

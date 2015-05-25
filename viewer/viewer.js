@@ -9,7 +9,7 @@ $(document).ready(function () {
 
   var canvas = $(config.canvasElement),
       width = canvas.parent().width(),
-      height = 600;
+      height = 900;
 
   var gl = webglContext({
     canvas: canvas.get(0),

@@ -16,9 +16,9 @@ void main() {
   gl_Position = u_projection * u_modelView * vec4(a_position, 1.0);
   
   vec3 directionalColor = vec3(1, 1, 1);
-  vec3 ambiantColor = vec3(0.5, 0.2, 0.14);
+  vec3 ambiantColor = vec3(193.0 / 255.0, 239.0 / 255.0, 75.0 / 255.0);
 
   vec3 transformedNormal = u_normalMatrix * a_normal;
   float directionalLightWeight = max(dot(transformedNormal, u_lightDirection), 0.0);
-  v_lightWeight = vec3(1.0) - (ambiantColor + directionalColor * directionalLightWeight);
+  v_lightWeight = ambiantColor + directionalColor * ((directionalLightWeight * directionalLightWeight) / 5.0);
 }
