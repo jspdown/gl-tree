@@ -1,0 +1,130 @@
+
+@nav-nbr-item: 3;
+
+@border-size: 5px;
+@border-split-size: 30px;
+
+@canvas-height: 400px;
+@nav-height: 40px;
+
+@header-padding-top: 100px;
+ 
+@layout-center-width: 500px;
+@nav-item-width: @layout-center-width / @nav-nbr-item;
+
+/* -- COLORS -- */
+@cloud: #ebf0f1;
+@silver: #bcc4c8;
+@wet-asphalt: #34495e;
+@midnight-blue: #2c3e50;
+@peter-river: #3498db;
+@belize-hole: #2980b9;
+@emerald: #00cd6b;
+@nephretis: #00a856;
+@turquoise: #00db9c;
+@green-sea: #00a1b5;
+@amethyst: #af58ba;
+@wisteria: #a342b1;
+@sun-flower: #ffc500;
+@orange: #f39c10;
+@carot: #ff7f0b;
+@pumkin: #f25300;
+@alizarin: #ff4b39;
+@pomegranate: #df3626;
+
+.createCenterLayout() {
+  display: block;
+  width: @layout-center-width;
+  margin: 0 auto;
+}
+
+.createBorderSplitter() {
+  border-top: @border-size solid @belize-hole;
+  border-bottom: @border-split-size solid @peter-river;
+}
+
+.createColor(@name) {
+  .color.@{name} { color: @@name; }
+  .background.@{name} { background-color: @@name; }
+  .underline.@{name}:hover { border-bottom: @border-size solid @@name; }
+  section.@{name} { 
+    .createBorderSplitter();
+  }
+}
+
+.createColor(cloud);
+.createColor(silver);
+.createColor(wet-asphalt);
+.createColor(midnight-blue);
+.createColor(peter-river);
+.createColor(belize-hole);
+.createColor(emerald);
+.createColor(nephretis);
+.createColor(turquoise);
+.createColor(green-sea);
+.createColor(amethyst);
+.createColor(wisteria);
+.createColor(sun-flower);
+.createColor(orange);
+.createColor(carot);
+.createColor(pumkin);
+.createColor(alizarin);
+.createColor(pomegranate);
+
+* { margin: 0; padding: 0; }
+
+html {
+  font-family: Helvetica, sans-serif;
+}
+
+#saveOurPlanete { display: none; }
+
+nav {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: @nav-height;
+  
+  z-index: 1000;
+  background-color: @wet-asphalt;
+  
+  & > ul { .createCenterLayout() }
+  & > ul > li {
+    float: left; 
+    height: 100%;
+    &:hover { background-color: @midnight-blue; }
+  }
+  & li > a { 
+    display: block;
+    width: @nav-item-width;
+    height: 100%;
+    
+    color: @cloud;
+    text-align: center;
+    line-height: @nav-height;
+    text-decoration: none;
+  }
+}
+
+header {
+  width: 100%;
+  padding-top: @header-padding-top;
+  
+  background-color: @midnight-blue;
+  .createBorderSplitter();
+  
+  & > canvas {
+    background: #fff;
+//    width: 100%;
+//    height: @canvas-height;
+  }
+}
+
+section {
+  min-height: 1px;
+}
+
+
+.debug-height {
+  height: 500px;
+}

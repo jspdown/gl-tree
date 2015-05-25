@@ -1,2 +1,8 @@
 # gl-procedural-building
-Procedural generated building (stack.gl, glMatrix, WebGL)
+Procedural generated building 
+
+![](https://github.com/jspdown/gl-procedural-building/blob/master/images/step0.png)
+
+## It uses:
+ 
+stack.gl, glMatrix, WebGL, browserify
