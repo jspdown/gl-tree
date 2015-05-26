@@ -10,26 +10,23 @@ var glslify = require('glslify');
 function init(gl, scene) {
   var shape = {};
     
-  var root = box.create(
-    vec3.fromValues(0, 0, 0),
-    [1.5, 0.8, 1.5]
-    //getRandomSize(0.5, 1) 
-  );
+  var root = box.create(vec3.fromValues(1.0, 0, 0), [1, 1, 1]);
 
-  var back = box.create(
-    vec3.fromValues(0.1, 0.2, 0),
-    [0.8, 0.6, 1]
-    //getRandomSize(0.1, 1) 
-  );
+    var back =      box.create(vec3.fromValues(0, 0, 0),      [0.5, 0.5, 0.5]),
+      top =       box.create(vec3.fromValues(0, 0, 0),      [0.6, 0.5, 0.2]),
+      topright =  box.create(vec3.fromValues(0, 0, 0),      [0.5, 0.5, 0.5]),
+      backback =  box.create(vec3.fromValues(0.5, 0.5, 0),  [0.4, 0.4, 1]);
+    
+  box.addChild(back, box.faces.FRONT, backback);  
+  box.addChild(back, box.faces.BACK, backback);  
+  box.addChild(top, box.faces.LEFT, topright);
+  box.addChild(top, box.faces.RIGHT, topright);
 
-//  var backback = box.create(
-//    vec3.fromValues(0, 0, 0),
-//    getRandomSize(0.5, 0.7) 
-//  );
-
-//  box.addChild(back, box.faces.TOP, backback);
+  box.addChild(root, box.faces.FRONT, back);
+  box.addChild(root, box.faces.BOTTOM, top);
   box.addChild(root, box.faces.BACK, back);
-
+  box.addChild(root, box.faces.TOP, top);
+  
   
   shape.root = root;
   
@@ -58,7 +55,7 @@ function init(gl, scene) {
 
 function update(gl, scene) {
   var flat = box.flatten(scene.shape.root);
-  console.log('flat = ', flat);
+  
   var vertexBuffer = gl.createBuffer(gl.ARRAY_BUFFER),
       normalBuffer = gl.createBuffer(gl.ARRAY_BUFFER),
       barycentricBuffer = gl.createBuffer(gl.ARRAY_BUFFER),
