@@ -5,10 +5,7 @@ var utils = require('./utils'),
     vec3 = require('gl-matrix').vec3,
     shape = require('./shape');
 
-function Renderer(gl, options) {
-  var lightDirection = vec3.create();
-  vec3.normalize(lightDirection, config.lightDirection);
-  
+function Renderer(gl, options) {  
   this.gl = gl;
   this._interval = null;
   this.timePerFrame = 1000 / options.fps;
@@ -17,7 +14,9 @@ function Renderer(gl, options) {
     projection: mat4.create(),
     modelView: mat4.create(),
     timeReference: Date.now(),
-    lightDirection: lightDirection,
+    ambiantColor: config.ambiantColor,
+    lightPosition: config.lightPosition,
+    lightColor: config.lightColor,
     camera: {
       needUpdate: true,
       height: options.size.y || 900,

@@ -1,7 +1,7 @@
 # gl-procedural-building
 Procedurally generated buildings
 
-![](https://github.com/jspdown/gl-procedural-building/blob/master/images/step1.png)
+![](https://github.com/jspdown/gl-procedural-building/blob/master/images/step2.png)
 
 
 ```javascript
@@ -29,7 +29,7 @@ var root = box.create(vec3.fromValues(1.0, 0, 0), [1, 1, 1]);
 
 ## TODO:
 
-- Define a gramar
+- Define a gramar :)
 
 ## Dependencies:
  

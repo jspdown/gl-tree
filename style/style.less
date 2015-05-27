@@ -7,7 +7,6 @@
 @canvas-height: 400px;
 @nav-height: 40px;
 
-@header-padding-top: 100px;
  
 @layout-center-width: 500px;
 @nav-item-width: @layout-center-width / @nav-nbr-item;
@@ -108,15 +107,12 @@ nav {
 
 header {
   width: 100%;
-  padding-top: @header-padding-top;
   
   background-color: @midnight-blue;
   .createBorderSplitter();
   
   & > canvas {
     background: #fff;
-//    width: 100%;
-//    height: @canvas-height;
   }
 }
 
@@ -124,6 +120,57 @@ section {
   min-height: 1px;
 }
 
+#edit form {
+  width: 90%;
+  margin: 70px auto;
+  margin-top: 30px;
+  height: 300px;
+  
+  & textarea {
+    width: 100%;
+    height: 100%;
+    background-color: @cloud;
+    outline: none;
+    border: none;
+    padding: 10px;
+    font-size: 1.2em;
+    resize: none;
+  }
+  & input {
+    margin-bottom: 20px;
+    float: right;
+    width: 200px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 1em;
+    border: none;
+    background-color: @peter-river;
+    color: @cloud;
+    cursor: pointer;
+    &:hover {
+      background-color: @belize-hole;  
+    }
+    
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+#edit button {  
+  display: block;
+  width: 100%;
+  height: 30px;
+  border: none;
+  outline: none;
+  line-height: 30px;
+  text-align: center;  
+}
+
+#editor {
+  height: 300px;
+}
 
 .debug-height {
   height: 500px;

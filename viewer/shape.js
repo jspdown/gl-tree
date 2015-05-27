@@ -7,34 +7,23 @@ var box = require('./box'),
 
 var glslify = require('glslify');
 
+function setTree(root, scene) {
+  scene.shape.root = root;
+  scene.shape.needUpdate = true;
+}
+
 function init(gl, scene) {
   var shape = {};
-    
-  var root = box.create(vec3.fromValues(1.0, 0, 0), [1, 1, 1]);
-
-    var back =      box.create(vec3.fromValues(0, 0, 0),      [0.5, 0.5, 0.5]),
-      top =       box.create(vec3.fromValues(0, 0, 0),      [0.6, 0.5, 0.2]),
-      topright =  box.create(vec3.fromValues(0, 0, 0),      [0.5, 0.5, 0.5]),
-      backback =  box.create(vec3.fromValues(0.5, 0.5, 0),  [0.4, 0.4, 1]);
-    
-  box.addChild(back, box.faces.FRONT, backback);  
-  box.addChild(back, box.faces.BACK, backback);  
-  box.addChild(top, box.faces.LEFT, topright);
-  box.addChild(top, box.faces.RIGHT, topright);
-
-  box.addChild(root, box.faces.FRONT, back);
-  box.addChild(root, box.faces.BOTTOM, top);
-  box.addChild(root, box.faces.BACK, back);
-  box.addChild(root, box.faces.TOP, top);
   
-  
-  shape.root = root;
+  shape.root = null;
   
   shape.uniforms = [
     { name: 'u_projection', location: null },
     { name: 'u_modelView', location: null },
     { name: 'u_normalMatrix', location: null },
-    { name: 'u_lightDirection', location: null }
+    { name: 'u_ambiant_color', location: null },
+    { name: 'u_point_lighting_location', location: null },
+    { name: 'u_point_lighting_color', location: null }
   ];
   
   shape.attributes = [
@@ -49,11 +38,11 @@ function init(gl, scene) {
     glslify('./shaders/shape.frag.glsl'),
     shape.uniforms, shape.attributes
   );
-  shape.needUpdate = true;
   scene.shape = shape;
 }
 
 function update(gl, scene) {
+  if (!scene.shape.root) { return; }
   var flat = box.flatten(scene.shape.root);
   
   var vertexBuffer = gl.createBuffer(gl.ARRAY_BUFFER),
@@ -84,6 +73,8 @@ function update(gl, scene) {
 }
 
 function render(gl, scene) {
+  if (!scene.shape.root) { return; }
+
   gl.bindBuffer(gl.ARRAY_BUFFER, scene.shape.vertexBuffer);
   gl.vertexAttribPointer(scene.shape.attributes[0].location, scene.shape.itemSize, gl.FLOAT, false, 0, 0);
 
@@ -106,18 +97,11 @@ function render(gl, scene) {
   gl.uniformMatrix4fv(scene.shape.uniforms[0].location, false, scene.projection);  
   gl.uniformMatrix4fv(scene.shape.uniforms[1].location, false, modelView);
   gl.uniformMatrix3fv(scene.shape.uniforms[2].location, false, normalMatrix);
-  gl.uniform3fv(scene.shape.uniforms[3].location, scene.lightDirection);
+  gl.uniform3fv(scene.shape.uniforms[3].location, scene.ambiantColor);
+  gl.uniform3fv(scene.shape.uniforms[4].location, scene.lightPosition);
+  gl.uniform3fv(scene.shape.uniforms[5].location, scene.lightColor);
   
   gl.drawElements(gl.TRIANGLES, scene.shape.itemNbr, gl.UNSIGNED_SHORT, 0);
-}
-
-
-function getRandomSize(min, max) {
-  return vec3.fromValues(
-    (Math.random() * 1000) % max + min,
-    (Math.random() * 1000) % max + min,
-    (Math.random() * 1000) % max + min
-  );
 }
 
 function buildModelView(modelView, position, rotation, scale) {
@@ -140,5 +124,6 @@ function buildNormalMatrix(normalMatrix, modelView) {
 module.exports = {
   init: init,
   update: update,
-  render: render
+  render: render,
+  setTree: setTree
 };

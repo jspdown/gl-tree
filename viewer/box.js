@@ -151,6 +151,10 @@ function getIndexes(currentIndex) {
  *  - indexes: flatten indexes
  *  - barycentric: flattenBarycentric
  */
+ /**
+  * TODO:
+  * - replace value 12 by something less... magic
+  */
 function flatten(node, parent) {
   parent = parent || {};
 
