@@ -8,7 +8,8 @@ var utils = require('./utils'),
     shape = require('./shape'),
     vec3 = require('gl-matrix').vec3,
     vec2 = require('gl-matrix').vec2,
-    mat4 = require('gl-matrix').mat4;
+    mat4 = require('gl-matrix').mat4,
+    api = require('./api');
     
     
     // init editor
@@ -44,9 +45,9 @@ $(document).ready(function () {
   
   // update shape from a custom script
   function executeCustomScript(customScript) {
-    var root;
-    eval(customScript);
-    shape.setTree(root, renderer.scene);
+    var ROOT;
+    eval('with (api) {' + customScript + '}');
+    shape.setTree(ROOT, renderer.scene);
   }
   
   executeCustomScript(editor.getValue());

@@ -61,6 +61,7 @@ function create(position, scale) {
   return {
     position: position,
     scale: scale,
+    tags: [],
     faces: [
       [], // FRONT
       [], // BACK
@@ -151,10 +152,7 @@ function getIndexes(currentIndex) {
  *  - indexes: flatten indexes
  *  - barycentric: flattenBarycentric
  */
- /**
-  * TODO:
-  * - replace value 12 by something less... magic
-  */
+
 function flatten(node, parent) {
   parent = parent || {};
 
@@ -179,9 +177,9 @@ function flatten(node, parent) {
     // modulo 2 is a nice side effect of our face storing structure
     var k = onFace % 2 == 0 ? nodeScale : scale;
     vec3.mul(scaledNormal, k, [
-      s_normals[onFace * (12)    ],
-      s_normals[onFace * (12) + 1],
-      s_normals[onFace * (12) + 2]
+      s_normals[onFace * (s_indexes_numItem)    ],
+      s_normals[onFace * (s_indexes_numItem) + 1],
+      s_normals[onFace * (s_indexes_numItem) + 2]
     ]);
     vec3.add(parentFaceAttachedTranslation, parentFaceAttachedTranslation, scaledNormal);
   }

@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "brace": "^0.5.1",
-    "gl-matrix": "^2.1.0",
+    "gl-matrix": "toji/gl-matrix",
     "gl-shader": "^4.0.1",
     "glslify": "^2.1.2",
     "jquery": "^2.1.4",
