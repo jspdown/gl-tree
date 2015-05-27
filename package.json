@@ -1,0 +1,25 @@
+{
+  "name": "SitePerso",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "brace": "^0.5.1",
+    "gl-matrix": "^2.1.0",
+    "gl-shader": "^4.0.1",
+    "glslify": "^2.1.2",
+    "jquery": "^2.1.4",
+    "less": "^2.5.0",
+    "webgl-context": "^2.1.2"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^3.8.0",
+    "grunt-contrib-copy": "^0.8.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
