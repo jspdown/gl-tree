@@ -1,6 +1,8 @@
 # gl-procedural-building
 Procedurally generated buildings
 
+[Demo](http://jspdown.github.io/gl-procedural-building/)
+
 ![](https://github.com/jspdown/gl-procedural-building/blob/master/images/step2.png)
 
 
