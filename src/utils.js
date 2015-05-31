@@ -37,11 +37,11 @@ function hexToRgb(hex) {
       gs = hex.substr(3, 2),
       bs = hex.substr(5, 2);
 
-  return {
-    r: parseInt(rs, 16) / 255,
-    g: parseInt(gs, 16) / 255,
-    b: parseInt(bs, 16) / 255
-  };
+  return [
+    parseInt(rs, 16) / 255,
+    parseInt(gs, 16) / 255,
+    parseInt(bs, 16) / 255
+  ];
 }
 
 function degToRad(deg) {

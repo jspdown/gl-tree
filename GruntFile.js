@@ -18,7 +18,7 @@ module.exports = function(grunt) {
         transform: ['glslify']
       },
       dev: {
-        src: ['viewer/viewer.js'],
+        src: ['src/index.js'],
         dest: 'dist/js/index.js'
       }
     }

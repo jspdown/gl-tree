@@ -8,8 +8,9 @@ var config = require('./config'),
     
 var glslify = require('glslify');
 
-function Renderer() {
+function Renderer(meshes) {
   this.gl = this._getWebGLContext();
+  this.meshes = meshes;
   
   this._initCamera();
   this._initMaterial();
@@ -22,7 +23,6 @@ function Renderer() {
 
 Renderer.prototype.render = function () {
   var _this = this;
-  
   setInterval(function () {
     requestAnimationFrame(function () {
       if (_this.needUpdate) { _this._update(); }
@@ -31,6 +31,11 @@ Renderer.prototype.render = function () {
   }, 1000 / config.fps);
 };
 
+Renderer.prototype.setBuliding = function (grid) {
+  this.building.grid = grid;
+  this.needUpdate = true;
+  this.needDraw = true;
+};
 
 Renderer.prototype._initCamera = function () {
   var canvas = $(config.domElement),
@@ -67,7 +72,6 @@ Renderer.prototype._initMaterial = function () {
     glslify('./shaders/frag.glsl'),
     uniforms, attributes
   );
-  
   return {
     uniforms: uniforms,
     attributes: attributes,
@@ -77,7 +81,7 @@ Renderer.prototype._initMaterial = function () {
 
 Renderer.prototype._initBuilding = function () {
   this.building = {
-    objectTree: null,
+    grid: null,
     vertex: this.gl.createBuffer(this.gl.ARRAY_BUFFER),
     normal: this.gl.createBuffer(this.gl.ARRAY_BUFFER),
     modelView: this.gl.createBuffer(this.gl.ARRAY_BUFFER),
@@ -93,7 +97,7 @@ Renderer.prototype._initLights = function () {
   };
 };
 
-Renderer.proyotype._getWebGLContext = function () {
+Renderer.prototype._getWebGLContext = function () {
   var canvas = $(config.domElement),
       width = canvas.parent().width(),
       height = config.height;
@@ -106,7 +110,8 @@ Renderer.proyotype._getWebGLContext = function () {
 };
 
 Renderer.prototype._update = function () {
-  var flat = this.building.objectTree.flatten(),
+  if (!this.builfing.grid) { return; }
+  var flat = this.building.grid.flatten(),
       gl = this.gl;
   
   gl.bindBuffer(gl.ARRAY_BUFFER, this.building.vertex);
@@ -123,6 +128,7 @@ Renderer.prototype._update = function () {
 };
 
 Renderer.prototype._draw = function () {
+  if (!this.builfing.grid) { return; }
   var gl = this.gl;
   
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
