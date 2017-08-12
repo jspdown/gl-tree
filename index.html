@@ -1,63 +1,34 @@
 <html>
   <head>
-    <title>gl-procedural-building</title>
-    <link rel="stylesheet" type="tex/css" href="dist/css/style.css">
-    <link rel="stylesheet" type="tex/css" href="dist/css/print.css" media="print">
+    <title>gl-tree</title>
+    <link rel="stylesheet" href="/dist/css/style.css">
   </head>
   <body>
-    <!--header-->
-    <header>
-      <canvas id="animation"></canvas>
-    </header>
-    <!--navigation bar-->
-    <nav>
-      <ul>
-        <li class="underline turquoise active"><a href="#animation">Viewer</a></li>
-        <li class="underline alizarin"><a href="#edit">Edit</a></li>
-      </ul>
-    </nav>
-    <!--END navigation bar-->
-    
-    <!--sections-->
-    <section class="background midnight-blue" id="edit">
-        <button>Edit</button>
-        <div id="editor">
-var root = createBox([0, 0, 0], [1, 1, 1]);
-  
-var firstFloor = createBox([0.05, 0, 0.05], [0.9, 1, 0.9]);
-var secondFloor = createBox([0.05, 0, 0.05], [0.9, 1, 0.9]);
+    <canvas id="animation"></canvas>
+    <div id="edit">
+      <div id="editor">
+        var root = createBox([1.0, 0, 0], [1, 1, 1]);
 
-addTags(firstFloor, 'Floor');
-addTags(secondFloor, 'Floor');
+        var back =      createBox([0, 0, 0], [0.5, 0.5, 0.5]),
+            top =       createBox([0, 0, 0], [0.6, 0.5, 0.2]),
+            topright =  createBox([0, 0, 0], [0.5, 0.5, 0.5]),
+            backback =  createBox([0.5, 0.5, 0], [0.4, 0.4, 1]);
 
-attachBoxToFace(root, TOP, firstFloor);
-attachBoxToFace(firstFloor, TOP, secondFloor);
+        attachBoxToFace(back, FRONT, backback);
+        attachBoxToFace(back, BACK, backback);
+        attachBoxToFace(top, LEFT, topright);
+        attachBoxToFace(top, RIGHT, topright);
 
-var windowPattern = createBox([0.4, 0.4, 0], [0.2, 0.2, 0.05]);
-var detailWindow = createBox([0.1, 0, 0], [0.8, 0.2, 1]);
-attachBoxToFace(windowPattern, TOP, detailWindow);
+        attachBoxToFace(root, FRONT, back);
+        attachBoxToFace(root, BOTTOM, top);
+        attachBoxToFace(root, BACK, back);
+        attachBoxToFace(root, TOP, top);
 
-getBoxByTag(root, 'Floor').forEach(function (floor) {
-    attachBoxToFace(floor, FRONT, windowPattern);
-    attachBoxToFace(floor, BACK, windowPattern);
-});
+        ROOT = root;
+      </div>
+      <button>Edit</button>
+    </div>
 
-// keep this line
-ROOT = root;           
-        </div>      
-    </section>
-      
-      
-    <section class="background midnight-blue" id="references"><div class="debug-height"></div></section>
-    <!--END sections -->
-    
-    <!--footer-->
-    <footer ></footer>
-    <!--END footer-->
-    
-    <!--scripts-->
-    <script src="dist/js/index.js"></script>
-    <!--END scripts-->
-    <div id="tEsConOuQuoi">Printing? Stupid mother fucker!</div>
+    <script src="/dist/js/index.js"></script>
   </body>
 </html>
