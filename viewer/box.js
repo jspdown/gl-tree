@@ -16,19 +16,19 @@ var s_faces = {
  */
 
 var s_normals_numItem = 24;
-var s_normals_sizeItem = 3;  
+var s_normals_sizeItem = 3;
 
 var s_normals = [
   0, 0, -1,   0, 0, -1,   0, 0, -1,   0, 0, -1,
   0, 0, 1,    0, 0, 1,    0, 0, 1,    0, 0, 1,
   -1, 0, 0,   -1, 0, 0,   -1, 0, 0,   -1, 0, 0,
-  1, 0, 0,    1, 0, 0,    1, 0, 0,    1, 0, 0, 
+  1, 0, 0,    1, 0, 0,    1, 0, 0,    1, 0, 0,
   0, -1, 0,   0, -1, 0,   0, -1, 0,   0, -1, 0,
-  0, 1, 0,    0, 1, 0,    0, 1, 0,    0, 1, 0 
+  0, 1, 0,    0, 1, 0,    0, 1, 0,    0, 1, 0
 ];
 
 var s_indexes_numItem = 12;
-var s_indexes_sizeItem = 3;  
+var s_indexes_sizeItem = 3;
 
 var s_indexes = [
   0, 1, 2,      2, 3, 1,
@@ -40,7 +40,7 @@ var s_indexes = [
 ];
 
 var s_vertices_numItem = 24;
-var s_vertices_sizeItem = 3;  
+var s_vertices_sizeItem = 3;
 
 var s_vertices = [
   [0, 0, 0],  [1, 0, 0],  [0, 1, 0],  [1, 1, 0], // FRONT
@@ -54,7 +54,7 @@ var s_vertices = [
 /**
  * create a box object
  * position (vec3): parent relative position
- * scale (vec3): box size 
+ * scale (vec3): box size
  * return: box (vec3)
  */
 function create(position, scale) {
@@ -70,20 +70,20 @@ function create(position, scale) {
       [], // TOP
       []  // BOTTOM
     ]
-  }; 
+  };
 }
 
 function getVertices(face, translation, scale) {
   var transform = mat4.create(),
       vertex = vec3.create(),
-      vertices = [], 
+      vertices = [],
       v;
-  
+
   mat4.identity(transform);
   mat4.translate(transform, transform, translation);
-  
+
   for (v = 0; v < s_vertices_numItem; v++) {
-      vec3.set(vertex, 
+      vec3.set(vertex,
         s_vertices[v][0] * scale[0],
         s_vertices[v][1] * scale[1],
         s_vertices[v][2] * scale[2]
@@ -93,35 +93,16 @@ function getVertices(face, translation, scale) {
     	vertices[v * s_vertices_sizeItem + 1] = vertex[1];
     	vertices[v * s_vertices_sizeItem + 2] = vertex[2];
   }
-  
+
   return vertices;
 }
 
 /**
- * get barycentric coords
- * return array of flatten barycentric coords
- */
-function getBarycentric() {
-  var barycentric = [];
-  
-  for (var i = 0; i < s_vertices_numItem; i++) {
-    if (i % 3 == 0) {
-      barycentric[i * 3    ] = 1; barycentric[i * 3 + 1] = 0; barycentric[i * 3 + 2] = 0; 
-    } else if (i % 3 == 1) {
-      barycentric[i * 3    ] = 0; barycentric[i * 3 + 1] = 1; barycentric[i * 3 + 2] = 0; 
-    } else {
-      barycentric[i * 3    ] = 0; barycentric[i * 3 + 1] = 0; barycentric[i * 3 + 2] = 1;
-    }
-  }
-  return barycentric;
-};
-
-/**
  * get normals
- * return: array of flatten normals 
+ * return: array of flatten normals
  */
 function getNormals() {
-  return s_normals;  
+  return s_normals;
 }
 
 /**
@@ -136,9 +117,9 @@ function getIndexes(currentIndex) {
 
 /**
  * flatten a node
- * node: 
+ * node:
  * - position unit are relative to parent scale
- * params: 
+ * params:
  * - node (box): the node you want to flatten
  * - parent: {
  *   position (vec3): absolute parent position
@@ -146,11 +127,10 @@ function getIndexes(currentIndex) {
  *   onFace (s_faces): parent face where `node` is attached
  *   index (int): nbr of vertices. used for indexing
  * }
- * return: 
+ * return:
  *  - vertices: flatten vertices
  *  - normals: flatten normals
  *  - indexes: flatten indexes
- *  - barycentric: flattenBarycentric
  */
 
 function flatten(node, parent) {
@@ -160,12 +140,12 @@ function flatten(node, parent) {
       scale = parent.scale || vec3.fromValues(1, 1, 1),
       onFace = typeof parent.onFace === 'undefined' ? -1 : parent.onFace,
       index = parent.index || 0;
-  
+
   // Compute absolute node scale
   var nodeScale = vec3.create();
   // compute absolute node scale by multuplying absolute parent scale and parent relative node scale
   vec3.mul(nodeScale, scale, node.scale);
-  
+
   // Compute absolute parent face attached position
   var parentFaceAttachedTranslation = vec3.fromValues(0, 0, 0),
       scaledNormal = vec3.create();
@@ -183,21 +163,20 @@ function flatten(node, parent) {
     ]);
     vec3.add(parentFaceAttachedTranslation, parentFaceAttachedTranslation, scaledNormal);
   }
-  
-  // Compute absolute node position 
+
+  // Compute absolute node position
   var nodeTranslation = vec3.create();
   // compute node translation from its parent relative positions (scale)
   vec3.mul(nodeTranslation, scale, node.position);
   // add parent face attached translation
   vec3.add(nodeTranslation, nodeTranslation, parentFaceAttachedTranslation);
-  
+
   var flat,
       vertices = getVertices(node, nodeTranslation, nodeScale),
       normals = getNormals(),
-      indexes = getIndexes(index),
-      barycentric = getBarycentric();
-  
-  
+      indexes = getIndexes(index)
+
+
   index += s_vertices_numItem;
   for (var f = 0; f < s_faces_numItem; f++) {
     for (var n = 0; n < node.faces[f].length; n++) {
@@ -205,13 +184,12 @@ function flatten(node, parent) {
         position: nodeTranslation,
         scale: nodeScale,
         onFace: f,
-        index: index  
+        index: index
       });
-            
+
       vertices = vertices.concat(flat.vertices);
       normals = normals.concat(flat.normals);
       indexes = indexes.concat(flat.indexes);
-      barycentric = barycentric.concat(flat.barycentric);
   	  index = flat.index;
     }
   }
@@ -219,11 +197,10 @@ function flatten(node, parent) {
     index: index,
     vertices: vertices,
     normals: normals,
-    indexes: indexes,
-    barycentric: barycentric
+    indexes: indexes
   };
 }
- 
+
 
 /**
  * add a child to the given box
@@ -233,7 +210,7 @@ function flatten(node, parent) {
  */
 function addChild(box, face, childBox) {
   box.faces[face].push(childBox);
-} 
+}
 
 
 module.exports = {
