@@ -1,5 +1,5 @@
 {
-  "name": "SitePerso",
+  "name": "gl-tree",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,21 +7,38 @@
     "brace": "^0.5.1",
     "gl-matrix": "toji/gl-matrix",
     "gl-shader": "^4.0.1",
-    "glslify": "^2.1.2",
+    "glslify": "^5.0.1",
     "jquery": "^2.1.4",
-    "less": "^2.5.0",
+    "less": "^4.1.3",
     "webgl-context": "^2.1.2"
   },
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-browserify": "^3.8.0",
-    "grunt-contrib-copy": "^0.8.0",
-    "grunt-contrib-less": "^1.4.1",
-    "grunt-contrib-watch": "^1.0.0"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack-dev-server --config webpack.config.js",
+    "build": "webpack",
+    "deploy": "gh-pages -d dist"
+
   },
-  "author": "",
-  "license": "ISC"
+  "browserify": {
+    "transform": [
+      "glslify"
+    ]
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.8.1",
+    "gh-pages": "^5.0.0",
+    "glslify-loader": "^2.0.0",
+    "grunt": "^1.6.1",
+    "grunt-browserify": "5.3.0",
+    "grunt-cli": "^1.4.3",
+    "grunt-contrib-less": "^3.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "ify-loader": "^1.1.0",
+    "less-loader": "^11.1.1",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.84.1",
+    "webpack-cli": "^5.1.1",
+    "webpack-dev-server": "^4.15.0"
+  }
 }

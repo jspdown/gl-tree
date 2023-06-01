@@ -1,10 +1,13 @@
-# gl-procedural-building
-Procedurally generated buildings
+# gl-tree
 
-[Demo](http://jspdown.github.io/gl-procedural-building/)
+Build complex 3D shapes by describing a tree of boxes. 
+Experiment project for better understanding MVP matrices.
 
-![](https://github.com/jspdown/gl-procedural-building/blob/master/images/step2.png)
+[Demo](http://jspdown.github.io/gl-tree/)
 
+![](https://github.com/jspdown/gl-tree/blob/master/images/step2.png)
+
+3D shapes can be described using the following syntax:
 
 ```javascript
 var root = box.create(vec3.fromValues(1.0, 0, 0), [1, 1, 1]);
@@ -29,9 +32,14 @@ var root = box.create(vec3.fromValues(1.0, 0, 0), [1, 1, 1]);
   box.addChild(root, box.faces.TOP, top);
 ```
 
-## TODO:
+## Build & Run
 
-- Define a gramar :)
+```shell
+$> npm install -g grunt-cli
+$> npm install
+$> grunt
+$> cd dist && python -m SimpleHTTPServer
+```
 
 ## Dependencies:
  

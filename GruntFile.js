@@ -11,13 +11,14 @@ module.exports = function(grunt) {
       }
     },
     browserify: {
-      options: {
-        browserifyOptions: {
-          debug: true
-        },
-        transform: ['glslify']
-      },
       dev: {
+        options: {
+          browserifyOptions: {
+            sourceType: "module",
+            debug: true
+          },
+          transform: ['glslify']
+        },
         src: ['viewer/viewer.js'],
         dest: 'dist/js/index.js'
       }
